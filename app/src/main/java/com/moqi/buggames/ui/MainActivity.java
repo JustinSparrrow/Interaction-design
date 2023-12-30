@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.moqi.buggames.R;
+import com.unity3d.player.UnityPlayerActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,14 +35,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton gameButton = findViewById(R.id.gameButton);
-        gameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent gameIntent = new Intent(MainActivity.this, UnityGameActivity.class);
-                startActivity(gameIntent);
-            }
+        findViewById(R.id.gameButton).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, UnityPlayerActivity.class);
+            startActivity(intent);
         });
+
 
         ImageButton dictionaryButton = findViewById(R.id.dictionaryButton);
         dictionaryButton.setOnClickListener(new View.OnClickListener() {
