@@ -205,4 +205,16 @@ public class AnimalNameManager {
 ```
 识别出来后遍历更新即可。  
 
+---
 ## Unity嵌入
+点开ProjectStructure，导入新模块unityLibrary，并为app模块提供依赖。  
+在gradle.properties文件中添加：
+`unityStreamingAssets=.unity3d, google-services-desktop.json, google-services.json, GoogleService-Info.plist`
+
+根据出现的报错信息进行修改，之后写一个链接的按钮事件：  
+```Java
+findViewById(R.id.gameButton).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, UnityPlayerActivity.class);
+            startActivity(intent);
+        });
+```
