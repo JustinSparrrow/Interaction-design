@@ -92,3 +92,30 @@ Java代码中拍照功能以及读取相册功能实现：
         }
     }
 ```
+
+### 识别功能实现
+Chaquopy 是一个用于在 Android Studio 中嵌入 Python 代码的插件。我们通过ChaquoPy方法调用我们的python方法。  
+在gradle中配置：  
+```gradle
+plugins {
+    id 'com.chaquo.python'
+}
+
+chaquopy {
+    pythonVersion "3.8"  // 选择所需的 Python 版本
+    ndkVersion "21.4.7075529"  // 选择所需的 NDK 版本
+}
+```
+在文件中调用方法：  
+```Java
+ protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Python python = Python.getInstance();
+        PyObject pyObject = python.getModule(imagePath);
+        String result = pyObject.callAttr(imagePath).toString();
+
+        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+    }
+```
