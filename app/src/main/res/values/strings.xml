@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">buggames</string>
+    <string name="game_button" />
+    <string name="dictionary_button" />
+    <string name="main_function" />
+    <string name="user_button" />
+    <string name="todo" />
+    <string name="select_picture_from_album">\n\n</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CardView">
+        <attr name="app_srcCompat" format="reference" />
+        <attr name="app_nameText" format="string" />
+        <attr name="app_levelText" format="string" />
+    </declare-styleable>
+</resources>
