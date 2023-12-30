@@ -119,3 +119,90 @@ chaquopy {
         Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
     }
 ```
+
+获取图片路径：  
+```Java
+// 将Bitmap保存到文件中
+    private String saveBitmapToFile(Bitmap imageBitmap, String title) {
+        // 声明变量
+        String imageFilePath = "";
+
+        // 保存文件到应用私有目录
+        File imageFile = new File(getFilesDir(), title + ".jpg");
+
+        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+            // 获取文件路径
+            imageFilePath = imageFile.getAbsolutePath();
+
+            // 将文件添加到相册
+            MediaStore.Images.Media.insertImage(getContentResolver(), imageFilePath, title, null);
+
+            // 刷新相册
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return imageFilePath;
+    }
+
+    // 获取图片文件路径
+    private String getImagePath(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();
+            return filePath;
+        }
+        return null;
+    }
+```
+
+### 图鉴功能
+先建立一个库用来保存可以识别的昆虫。  
+```Java
+// 获取之前保存的动物名称
+String savedAnimalName = AnimalNameManager.getAnimalName(this);
+
+// 设置CardView的属性
+setCardViewAttributes(R.id.cardView1, R.drawable.cangying, "苍蝇", "1", savedAnimalName);
+setCardViewAttributes(R.id.cardView2, R.drawable.wenzi, "蚊子", "2", savedAnimalName);
+setCardViewAttributes(R.id.cardView3, R.drawable.mifeng, "蜜蜂", "3", savedAnimalName);
+setCardViewAttributes(R.id.cardView4, R.drawable.huangfeng, "帝王蜂", "4", savedAnimalName);
+setCardViewAttributes(R.id.cardView5, R.drawable.qingting, "蜻蜓", "5", savedAnimalName);
+
+// 更新CardView的显示
+updateCardViews();
+```
+
+新建一个工具类来储存识别到的昆虫：  
+```Java
+public class AnimalNameManager {
+    private static final String PREF_NAME = "AnimalNamePrefs";
+    private static final String KEY_ANIMAL_NAME = "animalName";
+
+    private static SharedPreferences getSharedPreferences(Context context){
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    }
+
+    public static void saveAnimalName(Context context, String animalName){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(KEY_ANIMAL_NAME, animalName);
+        editor.apply();
+    }
+
+    public static String getAnimalName(Context context){
+        return getSharedPreferences(context).getString(KEY_ANIMAL_NAME,null);
+    }
+}
+
+```
+识别出来后遍历更新即可。  
+
+## Unity嵌入
